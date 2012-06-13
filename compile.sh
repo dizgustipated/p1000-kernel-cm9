@@ -3,9 +3,10 @@
 
 clear
 
-cd Kernel
+cd ~/androidcm9/system/kernel/samsung/Kernel
 
-make clean
+make mrproper
+
 
 DATA=`date '+%Y%m%d' --date="+1 days ago"`
 echo $DATA > .version
@@ -17,13 +18,19 @@ echo "  MAKING DEFCONFIG"
 echo "================================================================================================================="
 
 #P1000L
-make -j4 ARCH=arm p1_ltn_l_cm9_defconfig
+#make -j4 ARCH=arm p1_ltn_l_cm9_defconfig
 
 #P1000
-#make -j4 ARCH=arm p1_cm9_defconfig
+make -j4 ARCH=arm p1_cm9_defconfig
 
 ##P1000N
 #make -j4 ARCH=arm p1_ltn_n_cm9_defconfig
+
+echo "================================================================================================================="
+echo "  opening Kernel GUI"
+echo "================================================================================================================="
+
+make menuconfig
 
 echo " "
 echo " "
@@ -34,7 +41,7 @@ echo "==========================================================================
 echo "  BUILDING MODULES AND COPYING THEM TO RAMDISK"
 echo "================================================================================================================="
 
-make -j4 modules
+make -j8 modules
 
 echo " "
 echo " "
@@ -49,7 +56,7 @@ echo "==========================================================================
 echo "  BUILDING KERNEL"
 echo "================================================================================================================="
 
-make -j4
+make -j8
 
 cd arch/arm/boot
 ls -la
